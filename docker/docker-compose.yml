@@ -1,0 +1,6 @@
+version: '3'
+services:
+  geo_pg:
+    image: kartoza/postgis:13.0
+    ports:
+     - "5432:5432"
