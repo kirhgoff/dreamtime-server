@@ -1,14 +1,14 @@
 extern crate diesel;
 extern crate dotenv;
-extern crate dreamland_library;
+extern crate dreamtime_library;
 
 use diesel::prelude::*;
 
-use self::dreamland_library::*;
-use self::models::*;
+use models::*;
+use dreamtime_library::*;
 
 fn main() {
-    use dreamland_library::schema::users::dsl::*;
+    use dreamtime_library::schema::users::dsl::*;
 
     let connection = establish_connection();
     let results = users

@@ -1,8 +1,9 @@
-extern crate dreamland_library;
+extern crate dreamtime_library;
 extern crate diesel;
 
-use self::dreamland_library::*;
 use std::io::*;
+
+use dreamtime_library::*;
 
 fn read_value(comment: &str) -> String {
     println!("{}", comment);
