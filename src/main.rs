@@ -1,12 +1,8 @@
-#[macro_use]
 extern crate diesel;
 extern crate dotenv;
 extern crate dreamland_library;
 
 use diesel::prelude::*;
-use diesel::pg::PgConnection;
-use dotenv::dotenv;
-use std::env;
 
 use self::dreamland_library::*;
 use self::models::*;
