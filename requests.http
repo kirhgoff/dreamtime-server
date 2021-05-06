@@ -1,0 +1,10 @@
+@baseUrl = http://localhost:8000
+@apiKey = kirill@ch
+
+### 
+#  Test query to see if it works
+
+@name = hello
+
+GET {{baseUrl}}/
+X-Api-Key: {{apiKey}}
