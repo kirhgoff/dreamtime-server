@@ -15,5 +15,9 @@ name = "dreamland_library"
 path = "src/lib.rs"
 
 [[bin]]
-name = "sandbox"
-path = "src/main.rs"
+name = "read_users"
+path = "src/read_users.rs"
+
+[[bin]]
+name = "write_users"
+path = "src/write_users.rs"
