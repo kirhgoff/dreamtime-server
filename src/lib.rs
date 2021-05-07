@@ -9,6 +9,8 @@ use std::env;
 
 pub mod schema;
 pub mod models;
+pub mod api_keys;
+pub mod user_repository;
 
 use self::models::*;
 

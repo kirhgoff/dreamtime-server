@@ -9,16 +9,12 @@ name = "dreamtime_library"
 path = "src/lib.rs"
 
 [[bin]]
-name = "read_users"
-path = "src/read_users.rs"
+name = "dbconsole"
+path = "src/bin/dbconsole.rs"
 
 [[bin]]
-name = "write_users"
-path = "src/write_users.rs"
-
-[[bin]]
-name = "run_server"
-path = "src/run_server.rs"
+name = "webserver"
+path = "src/bin/webserver.rs"
 
 [dependencies]
 diesel = { version = "1.4.6", features = ["postgres"] }

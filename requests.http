@@ -2,9 +2,22 @@
 @apiKey = kirill@ch
 
 ### 
-#  Test query to see if it works
-
-@name = hello
-
-GET {{baseUrl}}/
+# Initiate a new user session
+# Will either create a new user or pick up an existent one 
+@name = connect_user
+POST {{baseUrl}}/users/connect
 X-Api-Key: {{apiKey}}
+Content-Type: application/json
+{
+    name: "Kirill",
+    email: "kirill@example.com"
+}
+
+### 
+# Get list of users
+# later will limit by radius
+@name = get_all_users
+GET {{baseUrl}}/users
+X-Api-Key: {{apiKey}}
+
+

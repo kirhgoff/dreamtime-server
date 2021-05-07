@@ -1,5 +1,7 @@
-use rocket::{http::Status, request, request::FromRequest, request::Outcome, Request, State};
-use rocket::outcome::{try_outcome, Outcome::*, IntoOutcome};
+use rocket::{http::Status, request, request::FromRequest, request::Outcome, Request};
+
+#[derive(Debug)]
+pub struct Auth(pub String);
 
 #[derive(Debug, Default)]
 pub struct ApiKey(pub String);
@@ -9,9 +11,6 @@ pub enum ApiKeyError {
     MissingKey,
     InvalidKey,
 }
-
-#[derive(Debug)]
-pub struct Auth(pub String);
 
 #[rocket::async_trait]
 impl<'r> FromRequest<'r> for Auth {

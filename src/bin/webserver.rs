@@ -6,11 +6,10 @@ use std::env;
 
 use rocket::{catch, catchers, fairing::{Fairing, Info, Kind}, get, http::{Cookie, CookieJar}, launch, post, response::status::Created, routes, uri, Data, Request, State, Phase, Ignite};
 
-pub mod api_keys;
 
-use dreamtime_library::establish_connection;
-use api_keys::ApiKey;
-use crate::api_keys::Auth;
+use dreamtime_library::*;
+
+use dreamtime_library::api_keys::*;
 
 #[get("/")]
 fn index(_auth: Auth) -> &'static str {
