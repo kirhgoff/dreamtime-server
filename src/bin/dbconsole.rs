@@ -10,7 +10,7 @@ use dreamtime_library::user_repository::UserRepository;
 
 fn main() {
     let connection = establish_connection();
-    let repository = UserRepository { connection: &connection };
+    let repository = UserRepository { connection };
     println!("Database console v.1");
     println!("=========================================");
     loop {

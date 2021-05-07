@@ -5,11 +5,11 @@ use diesel::pg::PgConnection;
 
 use crate::models::{User, NewUser};
 
-pub struct UserRepository<'r> {
-    pub connection: &'r PgConnection
+pub struct UserRepository {
+    pub connection: PgConnection
 }
 
-impl<'r> UserRepository<'r> {
+impl UserRepository {
     // pub fn find_user(&self, email: &str) -> User {
     //     let new_user = NewUser { name, email, password };
     //     diesel::find(users::table)
@@ -24,16 +24,16 @@ impl<'r> UserRepository<'r> {
         let new_user = NewUser { name, email, password };
         diesel::insert_into(users::table)
             .values(&new_user)
-            .get_result(self.connection)
+            .get_result(&self.connection)
             .expect("Error saving new user")
     }
 
-    pub fn get_users<'a>(&self) -> Vec<User> {
+    pub fn get_users(&self) -> Vec<User> {
         use crate::schema::users::dsl::*;
 
         // TODO: how to select all limit xx
         users
-            .load::<User>(self.connection)
+            .load::<User>(&self.connection)
             .expect("Error loading users")
     }
 }
