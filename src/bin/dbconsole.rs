@@ -7,6 +7,7 @@ use dreamtime_library::*;
 use std::process;
 
 use dreamtime_library::user_repository::UserRepository;
+use dreamtime_library::models::*;
 
 fn main() {
     let connection = establish_connection();
@@ -29,8 +30,9 @@ fn create_user(_command: String, repository: &UserRepository) {
     let name = read_value("Name: ");
     let email = read_value("Email: ");
     let password = read_value("Password: ");
+    let new_user = NewUser { name: &name, email: &email, password: &password };
 
-    let user = repository.create_user(&name, &email, &password);
+    let user = repository.create_user(&new_user);
     println!("\nCreated user {} with id {}", name, user.id);
 }
 

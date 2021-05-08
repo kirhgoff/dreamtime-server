@@ -18,12 +18,11 @@ impl UserRepository {
     //         .expect("Error saving new user")
     // }
 
-    pub fn create_user<'a>(&self, name: &'a str, email: &'a str, password: &'a str) -> User {
+    pub fn create_user<'a>(&self, new_user: &'a NewUser) -> User {
         use crate::schema::users;
 
-        let new_user = NewUser { name, email, password };
         diesel::insert_into(users::table)
-            .values(&new_user)
+            .values(new_user)
             .get_result(&self.connection)
             .expect("Error saving new user")
     }

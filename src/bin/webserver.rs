@@ -12,19 +12,27 @@ use dreamtime_library::*;
 use dreamtime_library::api_keys::*;
 use dreamtime_library::models::*;
 use dreamtime_library::user_repository::UserRepository;
-use std::sync::RwLock;
+use std::sync::{RwLock, Mutex};
 
 
-type SyncUserRepository = RwLock<UserRepository>;
 
 #[get("/")]
 fn health(_auth: Auth) -> &'static str {
     return "Hello";
 }
 
+type SyncUserRepository = Mutex<Box<UserRepository>>;
+
 #[post("/users/connect", format = "application/json", data = "<new_user>")]
-fn connect<'r>(_auth: Auth, new_user: Json<NewUser>, state: State<'r, SyncUserRepository>) -> &'static str {
-    return "Hello";
+fn users_connect<'r>(_auth: Auth, new_user: Json<NewUser>, repository: State<'r, SyncUserRepository>) -> Json<User> {
+    let locked_repo = repository.lock().unwrap();
+    Json(locked_repo.create_user(&new_user.0))
+}
+
+#[get("/users")]
+fn users_all<'r>(_auth: Auth, repository: State<'r, SyncUserRepository>) -> Json<Vec<User>> {
+    let locked_repo = repository.lock().unwrap();
+    Json(locked_repo.get_users())
 }
 
 #[launch]
@@ -36,8 +44,10 @@ async fn rocket() -> _ {
 
     rocket::build()
         .mount("/api/v1", routes![
-            health
+            health,
+            users_connect,
+            users_all
         ])
-        .manage(RwLock::new( UserRepository { connection }))
+        .manage(Mutex::new( Box::new(UserRepository { connection })))
         .manage(ApiKey(api_key))
 }

@@ -1,5 +1,11 @@
-@baseUrl = http://localhost:8000
+@baseUrl = http://localhost:8000/api/v1
 @apiKey = kirill@ch
+
+### 
+# Health check
+@name = health
+GET {{baseUrl}}/
+X-Api-Key: {{apiKey}}
 
 ### 
 # Initiate a new user session
@@ -8,9 +14,11 @@
 POST {{baseUrl}}/users/connect
 X-Api-Key: {{apiKey}}
 Content-Type: application/json
+
 {
-    name: "Kirill",
-    email: "kirill@example.com"
+    "name": "Kirill",
+    "email": "kirill@example.com",
+    "password": "bobo"
 }
 
 ### 
