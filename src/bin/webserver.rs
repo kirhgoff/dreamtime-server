@@ -4,7 +4,7 @@
 use dotenv::dotenv;
 use std::env;
 
-use rocket::{catch, catchers, fairing::{Fairing, Info, Kind}, get, http::{Cookie, CookieJar}, launch, post, response::status::Created, routes, uri, Data, Request, State, Phase, Ignite};
+use rocket::{catch, catchers, fairing::{Fairing, Info, Kind}, get, http::{Cookie, CookieJar}, launch, post, response::status::Created, routes, uri, Data, Request, State, Phase, Ignite, Rocket, Build};
 use serde::Deserialize;
 use rocket_contrib::json::Json;
 
@@ -13,8 +13,6 @@ use dreamtime_library::api_keys::*;
 use dreamtime_library::models::*;
 use dreamtime_library::user_repository::UserRepository;
 use std::sync::{RwLock, Mutex};
-
-
 
 #[get("/")]
 fn health(_auth: Auth) -> &'static str {
@@ -36,7 +34,7 @@ fn users_all<'r>(_auth: Auth, repository: State<'r, SyncUserRepository>) -> Json
 }
 
 #[launch]
-async fn rocket() -> _ {
+fn rocket() -> Rocket<Build> {
     dotenv().ok();
 
     let api_key = env::var("API_KEY").unwrap();
@@ -50,4 +48,23 @@ async fn rocket() -> _ {
         ])
         .manage(Mutex::new( Box::new(UserRepository { connection })))
         .manage(ApiKey(api_key))
+}
+
+#[cfg(test)]
+mod test {
+    use super::rocket;
+    use rocket::local::blocking::Client;
+    use rocket::http::{Status, Header};
+
+    #[test]
+    fn health() {
+        let client = Client::tracked(rocket()).expect("valid rocket instance");
+        let response = client
+            .get("/api/v1")
+            .header(Header::new("X-Api-Key", "kirill@ch"))
+            .dispatch();
+        assert_eq!(response.status(), Status::Ok);
+        assert_eq!(response.into_string().unwrap(), "Hello");
+    }
+
 }

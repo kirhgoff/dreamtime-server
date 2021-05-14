@@ -1,12 +1,12 @@
 extern crate diesel;
 
 use diesel::prelude::*;
-use diesel::pg::PgConnection;
 
 use crate::models::{User, NewUser};
+use crate::PgPool;
 
 pub struct UserRepository {
-    pub connection: PgConnection
+    pub connection: PgPool
 }
 
 impl UserRepository {
@@ -23,7 +23,7 @@ impl UserRepository {
 
         diesel::insert_into(users::table)
             .values(new_user)
-            .get_result(&self.connection)
+            .get_result(&self.connection.get().unwrap())
             .expect("Error saving new user")
     }
 
@@ -32,7 +32,7 @@ impl UserRepository {
 
         // TODO: how to select all limit xx
         users
-            .load::<User>(&self.connection)
+            .load::<User>(&self.connection.get().unwrap())
             .expect("Error loading users")
     }
 }
