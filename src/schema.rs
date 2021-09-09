@@ -1,4 +1,7 @@
 table! {
+    use diesel::sql_types::*;
+    use postgis_diesel::sql_types::*;
+
     spatial_ref_sys (srid) {
         srid -> Int4,
         auth_name -> Nullable<Varchar>,
@@ -9,11 +12,15 @@ table! {
 }
 
 table! {
+    use diesel::sql_types::*;
+    use postgis_diesel::sql_types::*;
+
     users (id) {
         id -> Int4,
         name -> Varchar,
         email -> Varchar,
         password -> Varchar,
+        geom -> Geometry,
     }
 }
 
